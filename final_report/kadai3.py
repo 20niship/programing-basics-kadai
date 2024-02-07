@@ -2,28 +2,8 @@
 
 import numpy as np 
 import cv2
+from .utils import whiten
 import matplotlib.pyplot as plt
-
-def whiten(X):
-    X = X - X.mean(axis=0)
-    print(X.shape)
-    cov = np.cov(X, rowvar=False)
-    print("cov ", cov.shape)
-    # np.dot(X.T, X) / X.shape[0]
-    # d, E = np.linalg.eig(cov)
-    # d = d.real.round(4)
-    # E = E.real.round(4)
-
-    d, E = np.linalg.eigh(cov)
-    
-    print("d , E = ", d, E)
-    D = np.diag(1.0 / np.sqrt(d))
-    V = E@D@E.T
-    # n_components = X.shape[1]
-    # V = V[0:n_components, :]
-    # X_white = V@X.T
-    X_white = X@V.T
-    return X_white
 
 def ica(Z, max_iter=200, tol=0.005):
     Zin = Z
