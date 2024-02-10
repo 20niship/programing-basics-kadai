@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 from utils import whiten
 
@@ -10,10 +10,15 @@ def ica(Z, max_iter=5000, tol=0.005):
 
     for _ in range(max_iter):
         tmp = Z.T @ ((Z.dot(W) ** 3))
-        delta_W = tmp.mean(axis=0) - 3 * W
+        # delta_W = tmp.mean(axis=0) - 3 * W
+        delta_W = tmp / n- 3 * W
+        # delta_W = (Z.T.dot((whitened_data.dot(W) ** 3)) / num_samples) - 3 * W
         
         W += 0.1 * delta_W
-        W /= np.sqrt((W ** 2).sum(axis=0))
+        # W /= np.sqrt((W ** 2).sum(axis=0))
+        W /= np.sqrt((W ** 2).sum())
+
+        print(np.average(np.abs(delta_W)))
 
         if np.average(np.abs(delta_W)) < tol:
             break
